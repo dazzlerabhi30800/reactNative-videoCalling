@@ -2,15 +2,16 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
 } from "react-native";
 import React, { useState } from "react";
 import { Link, useRouter } from "expo-router";
 import { useSignIn } from "@clerk/clerk-expo";
 import { MaterialIcons } from "@expo/vector-icons";
+import StyledButton from "@/components/StyledButton";
 
 const SignInScreen = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -46,6 +47,9 @@ const SignInScreen = () => {
       Alert.alert("Whoops!, looks like you entered wrong credentials");
     }
   }, [isLoaded, emailAddress, password]);
+
+  const { inputStyle } = styles;
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -54,6 +58,7 @@ const SignInScreen = () => {
         paddingHorizontal: 20,
         backgroundColor: "#5F5DEC",
         justifyContent: "center",
+        gap: 10,
       }}
     >
       <MaterialIcons
@@ -68,24 +73,76 @@ const SignInScreen = () => {
       <TextInput
         autoCapitalize="none"
         value={emailAddress}
-        placeholder="Enter email"
+        placeholder="Email"
+        style={inputStyle}
         onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
       />
       <TextInput
         value={password}
-        placeholder="Enter password"
+        placeholder="Password"
         secureTextEntry={true}
+        style={inputStyle}
         onChangeText={(password) => setPassword(password)}
       />
-      <Button title="Sign in" onPress={onSignInPress} />
-      <View>
-        <Text>Don't have an account?</Text>
+      {/* Divider */}
+      <View
+        style={{
+          borderBottomColor: "white",
+          borderBottomWidth: 1,
+          marginVertical: 20,
+        }}
+      ></View>
+      <StyledButton title="Sign In" onPress={onSignInPress} />
+      <Text
+        style={{
+          textAlign: "center",
+          color: "white",
+          fontSize: 18,
+          marginVertical: 5,
+        }}
+      >
+        OR
+      </Text>
+      {/* TODO: sign in with OAuth */}
+      <View
+        style={{
+          borderBottomColor: "white",
+          borderBottomWidth: 1,
+          marginVertical: 20,
+        }}
+      ></View>
+
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <Text style={{ color: "white" }}>Don't have an account?</Text>
         <Link href="/sign-up">
-          <Text>Sign up</Text>
+          <Text
+            style={{
+              color: "white",
+              textDecorationLine: "underline",
+              fontWeight: "bold",
+            }}
+          >
+            Sign up
+          </Text>
         </Link>
       </View>
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  inputStyle: {
+    backgroundColor: "white",
+    width: "100%",
+    borderRadius: 10,
+    padding: 20,
+  },
+});
 
 export default SignInScreen;
