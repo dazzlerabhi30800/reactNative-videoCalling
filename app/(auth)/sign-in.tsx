@@ -12,6 +12,7 @@ import { Link, useRouter } from "expo-router";
 import { useSignIn } from "@clerk/clerk-expo";
 import { MaterialIcons } from "@expo/vector-icons";
 import StyledButton from "@/components/StyledButton";
+import SignInWithAuth from "@/components/SignInWithAuth";
 
 const SignInScreen = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -104,6 +105,7 @@ const SignInScreen = () => {
         OR
       </Text>
       {/* TODO: sign in with OAuth */}
+      <SignInWithAuth />
       <View
         style={{
           borderBottomColor: "white",
