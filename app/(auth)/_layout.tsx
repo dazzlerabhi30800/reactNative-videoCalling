@@ -22,11 +22,11 @@ export default function AuthRoutesLayout() {
           options={{
             headerShown: true,
             headerTitle: "Create a new account",
-            headerBackTitle: "Sign In",
             headerStyle: {
               backgroundColor: "#5f5dec",
             },
             headerTintColor: "white",
+            headerBackVisible: true,
           }}
           name="sign-up"
         />

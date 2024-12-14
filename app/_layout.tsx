@@ -16,7 +16,7 @@ export default function RootLayout() {
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
         <Slot />
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
       </ClerkLoaded>
     </ClerkProvider>
   );

@@ -2,13 +2,14 @@ import * as React from "react";
 import {
   Text,
   TextInput,
-  Button,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
+import StyledButton from "@/components/StyledButton";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -18,8 +19,6 @@ export default function SignUpScreen() {
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
-
-
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
@@ -38,10 +37,11 @@ export default function SignUpScreen() {
       // Set 'pendingVerification' to true to display second form
       // and capture OTP code
       setPendingVerification(true);
-    } catch (err) {
+    } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      Alert.alert("Error: ", err.message);
+      // console.error(JSON.stringify(err, null, 2));
     }
   };
 
@@ -68,7 +68,8 @@ export default function SignUpScreen() {
     } catch (err) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      Alert.alert("Looks like you've entered the wrong code!!");
+      // console.error(JSON.stringify(err, null, 2));
     }
   };
 
@@ -76,15 +77,44 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <>
-        <Text>Verify your email</Text>
-        <TextInput
-          value={code}
-          placeholder="Enter your verification code"
-          onChangeText={(code) => setCode(code)}
-        />
-        <Button title="Verify" onPress={onVerifyPress} />
-      </>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+          backgroundColor: "#5F5DEC",
+          justifyContent: "center",
+          gap: 15,
+        }}
+      >
+        <>
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              fontSize: 20,
+              fontWeight: "500",
+              marginBottom: 20,
+            }}
+          >
+            A verification code has been sent to your email, please enter it to
+            below.
+          </Text>
+          <TextInput
+            value={code}
+            placeholder="Enter your verification code"
+            onChangeText={(code) => setCode(code)}
+            style={{
+              padding: 20,
+              width: "100%",
+              backgroundColor: "white",
+              borderRadius: 10,
+              marginBottom: 10,
+            }}
+          />
+          <StyledButton title="Verify" onPress={onVerifyPress} />
+        </>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -96,11 +126,21 @@ export default function SignUpScreen() {
         paddingHorizontal: 20,
         backgroundColor: "#5F5DEC",
         justifyContent: "center",
-        gap: 10,
+        gap: 15,
       }}
     >
       <>
-        <Text>Sign up</Text>
+        <Text
+          style={{
+            color: "white",
+            textAlign: "center",
+            fontSize: 20,
+            fontWeight: "bold",
+            marginBottom: 20,
+          }}
+        >
+          Enter your details to get started!
+        </Text>
         <TextInput
           autoCapitalize="none"
           value={emailAddress}
@@ -115,7 +155,8 @@ export default function SignUpScreen() {
           onChangeText={(password) => setPassword(password)}
           style={inputStyle}
         />
-        <Button title="Continue" onPress={onSignUpPress} />
+        {/* <Button title="Continue" onPress={onSignUpPress} /> */}
+        <StyledButton title="Sign Up" onPress={onSignUpPress} />
       </>
     </KeyboardAvoidingView>
   );
