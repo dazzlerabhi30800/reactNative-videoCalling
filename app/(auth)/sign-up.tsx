@@ -3,7 +3,6 @@ import {
   Text,
   TextInput,
   Button,
-  View,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -19,6 +18,8 @@ export default function SignUpScreen() {
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
+
+
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
